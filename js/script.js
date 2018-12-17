@@ -17,9 +17,24 @@ FSJS project 2 - List Filter and Pagination
    scoped to that function.
 ***/
 
-const studentList = document.querySelector('.student-list');
+
+// const remainder = 10 * ((numberOfStudents/10) - (Math.floor(numberOfStudents/10))).toFixed(1);
+const studentItems = document.querySelectorAll('.student-item');
+const numberOfStudents = studentItems.length;
+const numberOfPages = Math.ceil(numberOfStudents/10);
 
 
+// HIDE STUDENTS FUNCTION
+
+function hideStudents() {
+  // const studentItems = document.querySelectorAll('.student-item');
+  // const numberOfStudents = studentItems.length;
+  if (numberOfStudents > 10) {
+    for(i = 0; i < numberOfStudents; i++) {
+      studentItems[i].style.display = 'none';
+    }
+  }
+};
 
 
 /***
@@ -40,10 +55,60 @@ const studentList = document.querySelector('.student-list');
 
 
 
+
 /***
    Create the `appendPageLinks function` to generate, append, and add
    functionality to the pagination buttons.
 ***/
+
+
+function showPage(list, selectedPage) {
+    hideStudents();
+    for(i=selectedPage*10-10; i<selectedPage*10 && i<studentItems.length; i++) {
+        studentItems[i].style.display = '';
+        console.log(i);
+    }
+};
+
+// Page start initialized with first page
+showPage(studentItems, 1)
+
+
+function appendPageLinks() {
+  const page = document.querySelector('.page');
+  const pagination = document.createElement('div');
+  pagination.classList.add('pagination');
+  page.appendChild(pagination);
+  const ul = document.createElement('ul');
+  const numberOfPages = Math.ceil(numberOfStudents/10);
+  const paginationBtnUl = document.createElement('ul');
+  pagination.appendChild(paginationBtnUl);
+  for (i=0; i<numberOfPages; i++) {
+    let paginationBtnLi = document.createElement('li');
+    let paginationBtnA = document.createElement('a');
+    paginationBtnA.setAttribute('href', '#');
+    paginationBtnA.textContent = i+1;
+    paginationBtnLi.appendChild(paginationBtnA);
+    paginationBtnUl.appendChild(paginationBtnLi);
+  }
+  pagination.addEventListener('click', (e) => {
+    if (e.target.tagName == 'A') {
+      let selectedPage = e.target.textContent;
+      showPage(studentItems, selectedPage)
+      let paginationLinks = document.querySelectorAll('.pagination a');
+      for (i=0; i<paginationLinks.length; i++){
+        paginationLinks[i].classList.remove('active');
+      }
+      e.target.classList.add('active');
+    }
+  });
+}
+
+appendPageLinks();
+
+
+
+
 
 
 

@@ -99,7 +99,7 @@ body{
   margin: 40px 0 0 0;
   text-align: center;
 }
- 
+
   .pagination li{
     display: inline;
   }
@@ -107,6 +107,7 @@ body{
     .pagination li a{
       border: 1px solid #eaeaea;
       border-radius: 5px;
+      margin: .15em;
       padding: 3px 8px;
       text-decoration: none;
       color: #4ba6c3;
