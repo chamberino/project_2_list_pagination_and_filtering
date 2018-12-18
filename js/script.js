@@ -8,6 +8,7 @@ let studentItems = document.querySelectorAll('.student-item');
 let searchResults = Array.prototype.slice.call(document.querySelectorAll(".student-item"));
 let numberOfStudents = studentItems.length;
 let limitPerPage = 10;
+const pageHeader = document.querySelector('.page-header');
 const numberOfPages = Math.ceil(numberOfStudents/limitPerPage);
 const page = document.querySelector('.page');
 
@@ -31,7 +32,6 @@ function showPage(list, selectedPage, limitPerPage) {
 
 // Page start initializes with first page
 showPage(studentItems, 1, limitPerPage);
-
 
 ///  appendPageLinks function generates, append, and adds functionality
 ///  to the pagination buttons.
@@ -66,12 +66,30 @@ function appendPageLinks() {
 
 appendPageLinks();
 
+// createMessage and removeMessage dynamically create messages giving
+// user feedback if the search yielded no results.
+function createMessage() {
+  const div = document.createElement('div');
+  div.setAttribute('class', 'modal');
+  const h2 = document.createElement('h2');
+  h2.textContent='Sorry!'
+  const p = document.createElement('p');
+  p.textContent='No matches found.'
+  insertAfter(div, pageHeader);
+  div.appendChild(h2);
+  div.appendChild(p)
+}
+
+function removeMessage() {
+  const modal = document.querySelector('.modal');
+  modal.parentNode.removeChild(modal);
+}
+
 // ------------------------------------------
 //  SEARCH FUNCTION
 //  filterStudents function takes the input value and checks to see if it matches
 //  the name values stored in the students variable. If not, student is hidden.
 // ------------------------------------------
-
   const filterStudents = () => {
     let filterValue, employees, caption;
     filterValue = document.querySelector('INPUT').value.toUpperCase();
@@ -86,6 +104,12 @@ appendPageLinks();
     }
     updatePagination();
     showPage(searchResults, 1, limitPerPage);
+    if (searchResults.length === 0 && document.querySelector('.modal') === null) {
+      createMessage();
+    }
+    if (searchResults.length > 0 && document.querySelector('.modal') !== null) {
+      removeMessage();
+    }
   }
 
 // ------------------------------------------
